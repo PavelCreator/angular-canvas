@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Tools } from '../enums/tools.enum';
-import { Colors } from "../enums/colors.enum";
-import {SettingsService} from "../settings.service";
+import { Tools } from '@app/enums/tools.enum';
+import { Colors } from "@app/enums/colors.enum";
+import { SettingsService } from "@app/services/settings.service";
 
 @Component({
   selector: 'app-tools',
