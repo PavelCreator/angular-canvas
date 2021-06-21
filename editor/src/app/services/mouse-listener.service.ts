@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {SettingsService} from "@app/services/settings.service";
 import {DrawService} from "@app/services/draw-service.service";
 import {Tools} from "@app/enums/tools.enum";
+import {Coordinates2D} from "@app/interfaces/coordinates-2D";
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,7 @@ export class MouseListenerService {
     const elem: HTMLCanvasElement = this.drawService.element!;
 
     this.elemLeft = elem.offsetLeft,
-    this.elemTop = elem.offsetTop;
+      this.elemTop = elem.offsetTop;
 
     elem.addEventListener('mousedown', (event: MouseEvent) => {
       // this.drawService.context.globalCompositeOperation = 'destination-over';
@@ -32,9 +33,7 @@ export class MouseListenerService {
     elem.addEventListener('mousemove', (event: any) => {
       if (this.drawService.isDrawing) {
         this.settingsService.mouseMoveCoordinates = this.getCoordinates(event);
-        if (this.settingsService.tool !== Tools.Ellipse){
-          this.draw();
-        }
+        this.draw();
       }
     }, false);
 
@@ -46,8 +45,7 @@ export class MouseListenerService {
         this.draw();
 
         // this.drawService.context.globalCompositeOperation = 'source-over';
-        this.drawService.previousRectangleValues = null;
-        this.drawService.previousPenValues = null;
+        this.clearPreviousValues()
       }
     }, false);
 
@@ -57,8 +55,7 @@ export class MouseListenerService {
         this.draw();
 
         this.drawService.isDrawing = false;
-        this.drawService.previousRectangleValues = null;
-        this.drawService.previousPenValues = null;
+        this.clearPreviousValues();
       }
     }, false);
   }
@@ -82,7 +79,7 @@ export class MouseListenerService {
         break;
 
       case Tools.PenDoubleHorizontal:
-        this.drawService.drawPenDoubleHorisontal();
+        this.drawService.drawPenDoubleHorizontal();
         break;
 
       case Tools.PenDoubleVertical:
@@ -94,10 +91,16 @@ export class MouseListenerService {
     }
   }
 
-  private getCoordinates(event: MouseEvent) {
+  private getCoordinates(event: MouseEvent): Coordinates2D {
     return {
-        x: event.pageX - this.elemLeft,
-        y: event.pageY - this.elemTop
-      }
+      x: event.pageX - this.elemLeft,
+      y: event.pageY - this.elemTop
+    }
+  }
+
+  private clearPreviousValues(): void {
+    this.drawService.previousRectangleValues = null;
+    this.drawService.previousEllipseValues = null;
+    this.drawService.previousPenValues = null;
   }
 }

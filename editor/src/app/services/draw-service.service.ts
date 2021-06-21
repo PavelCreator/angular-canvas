@@ -13,6 +13,7 @@ export class DrawService {
   public element!: HTMLCanvasElement | null;
   public isDrawing: boolean = false;
   public previousRectangleValues!: RectangleDimensions | null;
+  public previousEllipseValues!: EllipseDimensions | null;
   public previousPenValues!: Coordinates2D | null;
 
   constructor(
@@ -25,10 +26,10 @@ export class DrawService {
 
     if (this.isDrawing && this.previousRectangleValues) {
       ctx!.clearRect(
-        this.previousRectangleValues.x,
-        this.previousRectangleValues.y,
-        this.previousRectangleValues.width,
-        this.previousRectangleValues.height
+        this.previousRectangleValues.x-1,
+        this.previousRectangleValues.y-1,
+        this.previousRectangleValues.width+2,
+        this.previousRectangleValues.height+2
       );
     }
 
@@ -44,7 +45,23 @@ export class DrawService {
 
   public drawEllipse(): void {
     const ctx = this.context;
-    const { cx, cy, rx, ry } = this.calcEllipseDimensions();
+    const shapeDimensions: RectangleDimensions = this.calcRectangleDimensions();
+    const { cx, cy, rx, ry } = this.calcEllipseDimensions(shapeDimensions);
+
+    if (this.isDrawing && this.previousEllipseValues) {
+      ctx!.beginPath();
+      ctx!.ellipse(
+        this.previousEllipseValues.cx,
+        this.previousEllipseValues.cy,
+        this.previousEllipseValues.rx+2,
+        this.previousEllipseValues.ry+2,
+        0,
+        0,
+        Math.PI*2);
+      ctx!.fillStyle = '#FFFFFF';
+      ctx!.fill();
+    }
+
     ctx!.beginPath();
     ctx!.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
     if (this.settingsService.fillMode === FillMode.Filled){
@@ -54,6 +71,8 @@ export class DrawService {
       ctx!.strokeStyle = this.settingsService.color;
       ctx!.stroke();
     }
+
+    this.previousEllipseValues = { cx, cy, rx, ry };
   }
 
   public drawPen(): void {
@@ -63,7 +82,7 @@ export class DrawService {
     this.previousPenValues = {x:x2,y:y2};
   }
 
-  public drawPenDoubleHorisontal(): void {
+  public drawPenDoubleHorizontal(): void {
     const {x:x1, y:y1} = this.previousPenValues ? this.previousPenValues : this.settingsService.mouseDownCoordinates;
     const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
     const offset = 10;
@@ -154,8 +173,7 @@ export class DrawService {
     }
   }
 
-  private calcEllipseDimensions(): EllipseDimensions {
-    const rectangleDimensions: RectangleDimensions = this.calcRectangleDimensions(false);
+  private calcEllipseDimensions(rectangleDimensions: RectangleDimensions): EllipseDimensions {
     return {
       cx: rectangleDimensions.x + rectangleDimensions.width/2,
       cy: rectangleDimensions.y + rectangleDimensions.height/2,
