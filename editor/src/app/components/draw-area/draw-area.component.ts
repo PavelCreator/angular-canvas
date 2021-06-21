@@ -29,30 +29,52 @@ export class DrawAreaComponent implements AfterViewInit {
 			this.drawService.context.fillRect(0, 0, elem.width, elem.height);
 
       const elemLeft: number = elem.offsetLeft,
-            elemTop: number = elem.offsetTop/*,
-            elements: any[] = []*/;
+            elemTop: number = elem.offsetTop;
 
       elem.addEventListener('mousedown', (event: any) => {
+          console.log('mousedown');
+          this.drawService.isDrawing = true;
           this.settingsService.mouseDownCoordinates = {
             x: event.pageX - elemLeft,
             y: event.pageY - elemTop
           };
-          console.log('mouseDownCoordinates =', this.settingsService.mouseDownCoordinates);
+      }, false);
+
+      elem.addEventListener('mousemove', (event: any) => {
+          if (this.drawService.isDrawing){
+            console.log('mousemove');
+            this.settingsService.mouseMoveCoordinates = {
+              x: event.pageX - elemLeft,
+              y: event.pageY - elemTop
+            };
+            this.draw();
+          }
       }, false);
 
       elem.addEventListener('mouseup', (event: any) => {
+          console.log('mouseup');
+          this.drawService.isDrawing = false;
           this.settingsService.mouseUpCoordinates = {
             x: event.pageX - elemLeft,
             y: event.pageY - elemTop
           };
           this.draw();
-          console.log('mouseUpCoordinates =', this.settingsService.mouseUpCoordinates);
+      }, false);
+
+      elem.addEventListener('mouseleave', (event: any) => {
+          if (this.drawService.isDrawing){
+            console.log('mouseleave');
+            this.settingsService.mouseMoveCoordinates = {
+              x: event.pageX - elemLeft,
+              y: event.pageY - elemTop
+            };
+            this.draw();
+            this.drawService.isDrawing = false;
+          }
       }, false);
   }
 
   draw(): void{
-    console.log('draw()');
-    console.log('this.settingsService.tool =', this.settingsService.tool);
     switch (this.settingsService.tool) {
       case Tools.Rectangle:
         this.drawService.drawRectangle();
@@ -60,10 +82,6 @@ export class DrawAreaComponent implements AfterViewInit {
 
       case Tools.Ellipse:
         this.drawService.drawEllipse();
-        break;
-
-      case Tools.FillColor:
-        this.drawService.fillColor();
         break;
 
       default:

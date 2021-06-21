@@ -13,6 +13,7 @@ export class SettingsService {
   public fillMode: FillMode;
   public color: Colors;
   public mouseDownCoordinates!: Coordinates2D;
+	public mouseMoveCoordinates!: Coordinates2D;
 	public mouseUpCoordinates!: Coordinates2D;
 
   constructor() {

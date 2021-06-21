@@ -9,6 +9,7 @@ import {FillMode} from "@app/enums/fill-mode.enum";
 })
 export class DrawService {
   public context!: CanvasRenderingContext2D;
+  public isDrawing: boolean = false;
 
   constructor(
     private settingsService: SettingsService
@@ -16,7 +17,6 @@ export class DrawService {
 
   public drawRectangle(): void {
     const ctx = this.context;
-    console.log('drawRectangle');
     const shapeDimensions: RectangleDimensions = this.calcRectangleDimensions();
     if (this.settingsService.fillMode === FillMode.Filled){
       ctx.fillStyle = this.settingsService.color;
@@ -41,13 +41,9 @@ export class DrawService {
     }
   }
 
-  public fillColor(): void {
-
-  }
-
   private calcRectangleDimensions(): RectangleDimensions {
     const {x: downX, y: downY} = this.settingsService.mouseDownCoordinates;
-    const {x: upX, y: upY} = this.settingsService.mouseUpCoordinates;
+    const {x: upX, y: upY} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
     const smallerX = downX <= upX ? downX : upX,
           smallerY = downY <= upY ? downY : upY,
           biggerX = downX > upX ? downX : upX,
