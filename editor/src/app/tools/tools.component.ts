@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Tools } from '../enums/tools.enum';
+import { Colors } from "../enums/colors.enum";
+import {SettingsService} from "../settings.service";
 
 @Component({
   selector: 'app-tools',
@@ -7,14 +10,24 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ToolsComponent implements OnInit {
 
-  constructor() { }
+  public tools = Tools;
+  public colors = Colors;
+  constructor(
+    private settingsService: SettingsService
+  ) {}
 
   ngOnInit(): void {
 
   }
 
-  squareToggle(): void {
-    console.log("square toggle");
+  toolChanged(tool: Tools): void {
+    console.log('tool =', tool);
+    this.settingsService.tool = tool;
+  }
+
+  colorChanged(color: Colors): void {
+    console.log('color =', color);
+    this.settingsService.color = color;
   }
 
 }

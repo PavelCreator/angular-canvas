@@ -19,10 +19,10 @@ export class DrawAreaComponent implements AfterViewInit {
       this.context.fillStyle = "white";
 			this.context.fillRect(0, 0, drawAreaEl.width, drawAreaEl.height);
 
-			setTimeout(() => {
+/*			setTimeout(() => {
 			    this.context.fillStyle = "blue";
 			    this.context.fillRect(0, 0, drawAreaEl.width, drawAreaEl.height);
-			}, 1000);
+			}, 1000);*/
   }
 
 }
