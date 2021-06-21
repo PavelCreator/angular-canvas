@@ -1,4 +1,4 @@
-<div class="tools-wrapper">
+<div class="tools-wrapper" class="no-select">
   <div class="line">
     <div class="inline-block">
       <p>Instruments:</p>
@@ -81,9 +81,14 @@
       </mat-form-field>
     </div>
     <div class="inline-block">
-      <p>Clear All:</p>
+      <p>Clear:</p>
       <button mat-raised-button class="single-button" (click)="clearCanvas()">
         <img class="icon" src="assets/icons/broom.svg"></button>
+    </div>
+    <div class="inline-block">
+      <p>Save:</p>
+      <button mat-raised-button class="single-button" (click)="saveImage()">
+        <img class="icon" src="assets/icons/floppy-disk.png"></button>
     </div>
   </div>
   <div class="line">
@@ -102,5 +107,8 @@
       <ngx-mat-color-toggle matSuffix [for]="picker"></ngx-mat-color-toggle>
       <ngx-mat-color-picker #picker></ngx-mat-color-picker>
     </mat-form-field>-->
+  </div>
+  <div>
+    <a id="link"></a>
   </div>
 </div>

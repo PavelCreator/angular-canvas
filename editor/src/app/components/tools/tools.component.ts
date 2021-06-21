@@ -65,6 +65,13 @@ export class ToolsComponent implements OnInit {
     }
   }
 
+  public saveImage(): void {
+    const link: HTMLElement | null = document.getElementById('link');
+    link!.setAttribute('download', 'CanvasImage.png');
+    link!.setAttribute('href', this.drawService.element!.toDataURL("image/png").replace("image/png", "image/octet-stream"));
+    link!.click();
+  }
+
   public showFillModes(): boolean {
     switch (this.settingsService.tool) {
       case Tools.Rectangle:

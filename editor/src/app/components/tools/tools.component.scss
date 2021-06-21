@@ -29,3 +29,7 @@ p {
   min-width: 52px;
   height: 48px;
 }
+
+.no-select {
+  user-select: none;
+}
