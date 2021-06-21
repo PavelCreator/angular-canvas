@@ -2,5 +2,7 @@ export enum Tools {
   Rectangle,
   Ellipse,
   Pen,
-  Spiral
+  Spiral,
+  PenDoubleHorizontal,
+  PenDoubleVertical,
 }

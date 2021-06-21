@@ -63,6 +63,56 @@ export class DrawService {
     this.previousPenValues = {x:x2,y:y2};
   }
 
+  public drawPenDoubleHorisontal(): void {
+    const {x:x1, y:y1} = this.previousPenValues ? this.previousPenValues : this.settingsService.mouseDownCoordinates;
+    const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
+    const offset = 10;
+    this.penCommonLogic(x1,x2,y1,y2);
+    this.previousPenValues = {x:x2,y:y2};
+
+    this.penCommonLogic(x1,x2,y1+offset,y2+offset);
+    if (+this.settingsService.linesToDraw >= 3) {
+      this.penCommonLogic(x1,x2,y1-offset,y2-offset);
+    }
+    if (+this.settingsService.linesToDraw >= 4) {
+      this.penCommonLogic(x1,x2,y1+offset*2,y2+offset*2);
+    }
+    if (+this.settingsService.linesToDraw >= 5) {
+      this.penCommonLogic(x1,x2,y1-offset*2,y2-offset*2);
+    }
+    if (+this.settingsService.linesToDraw >= 6) {
+      this.penCommonLogic(x1,x2,y1+offset*3,y2+offset*3);
+    }
+    if (+this.settingsService.linesToDraw >= 7) {
+      this.penCommonLogic(x1,x2,y1-offset*3,y2-offset*3);
+    }
+  }
+
+  public drawPenDoubleVertical(): void {
+    const {x:x1, y:y1} = this.previousPenValues ? this.previousPenValues : this.settingsService.mouseDownCoordinates;
+    const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
+    const offset = 10;
+    this.penCommonLogic(x1,x2,y1,y2);
+    this.previousPenValues = {x:x2,y:y2};
+
+    this.penCommonLogic(x1+offset,x2+offset,y1,y2);
+    if (+this.settingsService.linesToDraw >= 3) {
+      this.penCommonLogic(x1-offset,x2-offset,y1,y2);
+    }
+    if (+this.settingsService.linesToDraw >= 4) {
+      this.penCommonLogic(x1+offset*2,x2+offset*2,y1,y2);
+    }
+    if (+this.settingsService.linesToDraw >= 5) {
+      this.penCommonLogic(x1-offset*2,x2-offset*2,y1,y2);
+    }
+    if (+this.settingsService.linesToDraw >= 6) {
+      this.penCommonLogic(x1+offset*3,x2+offset*3,y1,y2);
+    }
+    if (+this.settingsService.linesToDraw >= 7) {
+      this.penCommonLogic(x1-offset*3,x2-offset*3,y1,y2);
+    }
+  }
+
   public drawSpiral(): void {
     const {x:x1, y:y1} = this.settingsService.mouseDownCoordinates;
     const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;

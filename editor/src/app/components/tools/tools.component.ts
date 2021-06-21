@@ -65,6 +65,20 @@ export class ToolsComponent implements OnInit {
     {
         case Tools.Pen:
         case Tools.Spiral:
+        case Tools.PenDoubleHorizontal:
+        case Tools.PenDoubleVertical:
+            return true;
+
+        default:
+            return false;
+    }
+  }
+
+  public showLineCount(): boolean {
+    switch (this.settingsService.tool)
+    {
+        case Tools.PenDoubleHorizontal:
+        case Tools.PenDoubleVertical:
             return true;
 
         default:

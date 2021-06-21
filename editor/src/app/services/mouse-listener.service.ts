@@ -79,6 +79,14 @@ export class MouseListenerService {
         this.drawService.drawSpiral();
         break;
 
+      case Tools.PenDoubleHorizontal:
+        this.drawService.drawPenDoubleHorisontal();
+        break;
+
+      case Tools.PenDoubleVertical:
+        this.drawService.drawPenDoubleVertical();
+        break;
+
       default:
         break;
     }

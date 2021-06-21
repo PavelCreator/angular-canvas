@@ -11,6 +11,10 @@
         </mat-button-toggle>
         <mat-button-toggle value="{{ tools.Spiral }}"><img class="icon" src="assets/icons/triskele.svg">
         </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.PenDoubleHorizontal }}"><img class="icon" src="assets/icons/menu-bar.svg">
+        </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.PenDoubleVertical }}"><img class="icon" src="assets/icons/vertical-lines.svg">
+        </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
     <div class="inline-block" *ngIf="showFillModes()">
@@ -62,9 +66,24 @@
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+    <div class="inline-block option-list-wrapper" *ngIf="showLineCount()">
+      <p>Line count:</p>
+      <mat-form-field appearance="fill">
+        <mat-label>How many lines to draw?</mat-label>
+        <mat-select [(value)]="settingsService.linesToDraw">
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+          <mat-option value="4">4</mat-option>
+          <mat-option value="5">5</mat-option>
+          <mat-option value="6">6</mat-option>
+          <mat-option value="7">7</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
     <div class="inline-block">
       <p>Clear All:</p>
-      <button mat-raised-button class="single-button" (click)="clearCanvas()"><img class="icon" src="assets/icons/broom.svg"></button>
+      <button mat-raised-button class="single-button" (click)="clearCanvas()">
+        <img class="icon" src="assets/icons/broom.svg"></button>
     </div>
   </div>
   <div class="line">
