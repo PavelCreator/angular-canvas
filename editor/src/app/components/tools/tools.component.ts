@@ -5,6 +5,9 @@ import {SettingsService} from "@app/services/settings.service";
 import {FillMode} from "@app/enums/fill-mode.enum";
 import {DrawService} from "@app/services/draw-service.service";
 import {EnumMember} from "@angular/compiler-cli/src/ngtsc/reflection";
+import { AbstractControl, FormControl } from '@angular/forms';
+import { ThemePalette } from '@angular/material/core';
+
 
 @Component({
   selector: 'app-tools',
@@ -17,10 +20,24 @@ export class ToolsComponent implements OnInit {
   public fillMode = FillMode;
   public colors: string[] = [];
 
+  public disabled = false;
+  public color: ThemePalette = 'primary';
+  public touchUi = false;
+
+  public colorCtr: FormControl = new FormControl(null);
+
+  public options = [
+    { value: true, label: 'True' },
+    { value: false, label: 'False' }
+  ];
+
+  public listColors = ['primary', 'accent', 'warn'];
+
   constructor(
     public settingsService: SettingsService,
     private drawService: DrawService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.colors = this.enumToArray(Colors);
@@ -49,40 +66,37 @@ export class ToolsComponent implements OnInit {
   }
 
   public showFillModes(): boolean {
-    switch (this.settingsService.tool)
-    {
-        case Tools.Rectangle:
-        case Tools.Ellipse:
-            return true;
+    switch (this.settingsService.tool) {
+      case Tools.Rectangle:
+      case Tools.Ellipse:
+        return true;
 
-        default:
-            return false;
+      default:
+        return false;
     }
   }
 
   public showLineWidth(): boolean {
-    switch (this.settingsService.tool)
-    {
-        case Tools.Pen:
-        case Tools.Spiral:
-        case Tools.PenDoubleHorizontal:
-        case Tools.PenDoubleVertical:
-            return true;
+    switch (this.settingsService.tool) {
+      case Tools.Pen:
+      case Tools.Spiral:
+      case Tools.PenDoubleHorizontal:
+      case Tools.PenDoubleVertical:
+        return true;
 
-        default:
-            return false;
+      default:
+        return false;
     }
   }
 
   public showLineCount(): boolean {
-    switch (this.settingsService.tool)
-    {
-        case Tools.PenDoubleHorizontal:
-        case Tools.PenDoubleVertical:
-            return true;
+    switch (this.settingsService.tool) {
+      case Tools.PenDoubleHorizontal:
+      case Tools.PenDoubleVertical:
+        return true;
 
-        default:
-            return false;
+      default:
+        return false;
     }
   }
 

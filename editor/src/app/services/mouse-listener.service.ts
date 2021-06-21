@@ -32,7 +32,9 @@ export class MouseListenerService {
     elem.addEventListener('mousemove', (event: any) => {
       if (this.drawService.isDrawing) {
         this.settingsService.mouseMoveCoordinates = this.getCoordinates(event);
-        this.draw();
+        if (this.settingsService.tool !== Tools.Ellipse){
+          this.draw();
+        }
       }
     }, false);
 

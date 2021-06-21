@@ -9,11 +9,15 @@ import { DrawAreaComponent } from './components/draw-area/draw-area.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonToggleModule} from "@angular/material/button-toggle";
 import { CanvasEventsDirective } from './directives/canvas-events.directive';
-import {MatRadioButton} from "@angular/material/radio";
+import {MatRadioButton, MatRadioModule} from "@angular/material/radio";
 import {MatButtonModule} from "@angular/material/button";
 import {MatOptionModule} from "@angular/material/core";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
+import { MAT_COLOR_FORMATS, NgxMatColorPickerModule, NGX_MAT_COLOR_FORMATS } from '@angular-material-components/color-picker';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatCardModule} from "@angular/material/card";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -32,8 +36,18 @@ import {MatSelectModule} from "@angular/material/select";
     MatOptionModule,
     MatSelectModule,
     FormsModule,
+    NgxMatColorPickerModule,
+    MatCardModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatRadioModule,
+    MatSelectModule
   ],
-  providers: [],
+  providers: [
+    { provide: MAT_COLOR_FORMATS, useValue: NGX_MAT_COLOR_FORMATS }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
