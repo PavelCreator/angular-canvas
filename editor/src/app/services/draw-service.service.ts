@@ -3,13 +3,17 @@ import {SettingsService} from "@app/services/settings.service";
 import {RectangleDimensions} from "@app/interfaces/rectangle-dimensions";
 import {EllipseDimensions} from "@app/interfaces/ellipse-dimensions";
 import {FillMode} from "@app/enums/fill-mode.enum";
+import {Coordinates2D} from "@app/interfaces/coordinates-2D";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DrawService {
-  public context!: CanvasRenderingContext2D;
+  public context!: CanvasRenderingContext2D | null;
+  public element!: HTMLCanvasElement | null;
   public isDrawing: boolean = false;
+  public previousRectangleValues!: RectangleDimensions | null;
+  public previousPenValues!: Coordinates2D | null;
 
   constructor(
     private settingsService: SettingsService
@@ -18,32 +22,74 @@ export class DrawService {
   public drawRectangle(): void {
     const ctx = this.context;
     const shapeDimensions: RectangleDimensions = this.calcRectangleDimensions();
-    if (this.settingsService.fillMode === FillMode.Filled){
-      ctx.fillStyle = this.settingsService.color;
-      ctx.fillRect(shapeDimensions.x, shapeDimensions.y, shapeDimensions.width, shapeDimensions.height);
-    } else {
-      ctx.strokeStyle = this.settingsService.color;
-      ctx.strokeRect(shapeDimensions.x, shapeDimensions.y, shapeDimensions.width, shapeDimensions.height);
+
+    if (this.isDrawing && this.previousRectangleValues) {
+      ctx!.clearRect(
+        this.previousRectangleValues.x,
+        this.previousRectangleValues.y,
+        this.previousRectangleValues.width,
+        this.previousRectangleValues.height
+      );
     }
+
+    if (this.settingsService.fillMode === FillMode.Filled){
+      ctx!.fillStyle = this.settingsService.color;
+      ctx!.fillRect(shapeDimensions.x, shapeDimensions.y, shapeDimensions.width, shapeDimensions.height);
+    } else {
+      ctx!.strokeStyle = this.settingsService.color;
+      ctx!.strokeRect(shapeDimensions.x, shapeDimensions.y, shapeDimensions.width, shapeDimensions.height);
+    }
+    this.previousRectangleValues = shapeDimensions;
   }
 
   public drawEllipse(): void {
     const ctx = this.context;
     const { cx, cy, rx, ry } = this.calcEllipseDimensions();
-    ctx.beginPath();
-    ctx.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
+    ctx!.beginPath();
+    ctx!.ellipse(cx, cy, rx, ry, 0, 0, Math.PI*2);
     if (this.settingsService.fillMode === FillMode.Filled){
-      ctx.fillStyle = this.settingsService.color;
-      ctx.fill();
+      ctx!.fillStyle = this.settingsService.color;
+      ctx!.fill();
     } else {
-      ctx.strokeStyle = this.settingsService.color;
-      ctx.stroke();
+      ctx!.strokeStyle = this.settingsService.color;
+      ctx!.stroke();
     }
   }
 
-  private calcRectangleDimensions(): RectangleDimensions {
+  public drawPen(): void {
+    const {x:x1, y:y1} = this.previousPenValues ? this.previousPenValues : this.settingsService.mouseDownCoordinates;
+    const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
+    this.penCommonLogic(x1,x2,y1,y2);
+    this.previousPenValues = {x:x2,y:y2};
+  }
+
+  public drawSpiral(): void {
+    const {x:x1, y:y1} = this.settingsService.mouseDownCoordinates;
+    const {x:x2, y:y2} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
+    this.penCommonLogic(x1,x2,y1,y2);
+  }
+
+  public clearCanvas(): void {
+      this.element!.width = window.innerWidth - 60;
+      this.element!.height = window.innerHeight - 220;
+      this.context!.fillStyle = "white";
+			this.context!.fillRect(0, 0, this.element!.width, this.element!.height);
+  }
+
+  private penCommonLogic(x1: number, x2: number, y1: number, y2: number): void {
+    const ctx = this.context;
+    ctx!.beginPath();
+    ctx!.strokeStyle = this.settingsService.color;
+    ctx!.lineWidth = this.settingsService.lineWidth;
+    ctx!.moveTo(x1, y1);
+    ctx!.lineTo(x2, y2);
+    ctx!.stroke();
+    ctx!.closePath();
+  }
+
+  private calcRectangleDimensions(moveModeOn = true): RectangleDimensions {
     const {x: downX, y: downY} = this.settingsService.mouseDownCoordinates;
-    const {x: upX, y: upY} = this.isDrawing ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
+    const {x: upX, y: upY} = this.isDrawing && moveModeOn ? this.settingsService.mouseMoveCoordinates : this.settingsService.mouseUpCoordinates;
     const smallerX = downX <= upX ? downX : upX,
           smallerY = downY <= upY ? downY : upY,
           biggerX = downX > upX ? downX : upX,
@@ -59,7 +105,7 @@ export class DrawService {
   }
 
   private calcEllipseDimensions(): EllipseDimensions {
-    const rectangleDimensions: RectangleDimensions = this.calcRectangleDimensions();
+    const rectangleDimensions: RectangleDimensions = this.calcRectangleDimensions(false);
     return {
       cx: rectangleDimensions.x + rectangleDimensions.width/2,
       cy: rectangleDimensions.y + rectangleDimensions.height/2,

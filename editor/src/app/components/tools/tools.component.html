@@ -2,26 +2,74 @@
   <div class="line">
     <div class="inline-block">
       <p>Instruments:</p>
-      <mat-button-toggle-group (change)="toolChanged($event.value)" value="{{tools.Rectangle}}">
+      <mat-button-toggle-group (change)="toolChanged($event.value)" value="{{settingsService.tool}}">
         <mat-button-toggle value="{{ tools.Rectangle }}"><img class="icon" src="assets/icons/rectangle.svg">
         </mat-button-toggle>
         <mat-button-toggle value="{{ tools.Ellipse }}"><img class="icon" src="assets/icons/ellipse.svg">
         </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.Pen }}"><img class="icon" src="assets/icons/signature.svg">
+        </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.Spiral }}"><img class="icon" src="assets/icons/triskele.svg">
+        </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
-    <div class="inline-block">
+    <div class="inline-block" *ngIf="showFillModes()">
       <p>Fill mode:</p>
-      <mat-button-toggle-group (change)="fillModeChanged($event.value)" value="{{fillMode.Filled}}">
+      <mat-button-toggle-group (change)="fillModeChanged($event.value)" value="{{settingsService.fillMode}}">
         <mat-button-toggle value="{{ fillMode.Filled }}"><img class="icon" src="assets/icons/fill.svg">
         </mat-button-toggle>
         <mat-button-toggle value="{{ fillMode.BorderOnly }}"><img class="icon" src="assets/icons/square.svg">
         </mat-button-toggle>
       </mat-button-toggle-group>
     </div>
+    <div class="inline-block" *ngIf="showLineWidth()">
+      <p>Line width:</p>
+      <mat-button-toggle-group (change)="lineWidthChanged($event.value)" value="{{settingsService.lineWidth}}">
+        <mat-button-toggle value="1">
+          <svg width="20" height="20" class="svg-color"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="9" width="16" height="1"/>
+          </svg>
+        </mat-button-toggle>
+        <mat-button-toggle value="2">
+          <svg width="20" height="20" class="svg-color"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="9" width="16" height="2"/>
+          </svg>
+        </mat-button-toggle>
+        <mat-button-toggle value="3">
+          <svg width="20" height="20" class="svg-color"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="8" width="16" height="3"/>
+          </svg>
+        </mat-button-toggle>
+        <mat-button-toggle value="4">
+          <svg width="20" height="20" class="svg-color"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="8" width="16" height="4"/>
+          </svg>
+        </mat-button-toggle>
+        <mat-button-toggle value="5">
+          <svg width="20" height="20" class="svg-color"
+               viewBox="0 0 20 20"
+               xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="7" width="16" height="5"/>
+          </svg>
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="inline-block">
+      <p>Clear All:</p>
+      <button mat-raised-button class="single-button" (click)="clearCanvas()"><img class="icon" src="assets/icons/broom.svg"></button>
+    </div>
   </div>
   <div class="line">
     <p>Color:</p>
-    <mat-button-toggle-group (change)="colorChanged($event.value)" value="{{ colors[0] }}">
+    <mat-button-toggle-group (change)="colorChanged($event.value)" value="{{settingsService.color}}">
       <mat-button-toggle value="{{ color }}" *ngFor="let color of colors">
         <svg attr.fill="{{ color }}" width="20" height="20" class="svg-color"
              viewBox="0 0 20 20"

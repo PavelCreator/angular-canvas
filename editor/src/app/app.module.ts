@@ -9,6 +9,8 @@ import { DrawAreaComponent } from './components/draw-area/draw-area.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonToggleModule} from "@angular/material/button-toggle";
 import { CanvasEventsDirective } from './directives/canvas-events.directive';
+import {MatRadioButton} from "@angular/material/radio";
+import {MatButtonModule} from "@angular/material/button";
 
 @NgModule({
   declarations: [
@@ -23,6 +25,7 @@ import { CanvasEventsDirective } from './directives/canvas-events.directive';
     AppRoutingModule,
     BrowserAnimationsModule,
     MatButtonToggleModule,
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

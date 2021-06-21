@@ -11,6 +11,7 @@ export class SettingsService {
 
   public tool: Tools;
   public fillMode: FillMode;
+  public lineWidth: number;
   public color: Colors;
   public mouseDownCoordinates!: Coordinates2D;
 	public mouseMoveCoordinates!: Coordinates2D;
@@ -19,6 +20,7 @@ export class SettingsService {
   constructor() {
     this.tool = Tools.Rectangle;
     this.fillMode = FillMode.Filled;
+    this.lineWidth = 1;
     this.color = Colors.Black;
   }
 }
