@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, ViewChild} from '@angular/core';
 import {SettingsService} from "@app/services/settings.service";
-import {Coordinates2D} from "@app/interfaces/coordinates2D";
+import {Coordinates2D} from "@app/interfaces/coordinates-2D";
 import {Tools} from "@app/enums/tools.enum";
 import {DrawService} from "@app/services/draw-service.service";
 
@@ -19,7 +19,11 @@ export class DrawAreaComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit(): void {
+
       const elem = this.drawArea.nativeElement;
+      console.log('elem.getBoundingClientRect() =', elem.getBoundingClientRect());
+      elem.width = window.innerWidth - 60;
+      elem.height = window.innerHeight - 220;
       this.drawService.context = elem.getContext('2d');
       this.drawService.context.fillStyle = "white";
 			this.drawService.context.fillRect(0, 0, elem.width, elem.height);
@@ -47,6 +51,8 @@ export class DrawAreaComponent implements AfterViewInit {
   }
 
   draw(): void{
+    console.log('draw()');
+    console.log('this.settingsService.tool =', this.settingsService.tool);
     switch (this.settingsService.tool) {
       case Tools.Rectangle:
         this.drawService.drawRectangle();

@@ -1,4 +1,4 @@
-export interface ShapeWith2Sides {
+export interface RectangleDimensions {
   x: number,
   y: number,
   width: number,

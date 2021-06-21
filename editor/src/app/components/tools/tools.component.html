@@ -1,17 +1,36 @@
 <div class="tools-wrapper">
-  <p>
-    Mode:
-    <mat-button-toggle-group (change)="toolChanged($event.value)" value="{{tools.Rectangle}}">
-      <mat-button-toggle value="{{ tools.Rectangle }}"><img class="icon" src="assets/icons/rectangle.svg"></mat-button-toggle>
-      <mat-button-toggle value="{{ tools.Ellipse }}"><img class="icon" src="assets/icons/ellipse.svg"></mat-button-toggle>
-      <mat-button-toggle value="{{ tools.FillColor }}"><img class="icon" src="assets/icons/fill-color.svg"></mat-button-toggle>
+  <div class="line">
+    <div class="inline-block">
+      <p>Instruments:</p>
+      <mat-button-toggle-group (change)="toolChanged($event.value)" value="{{tools.Rectangle}}">
+        <mat-button-toggle value="{{ tools.Rectangle }}"><img class="icon" src="assets/icons/rectangle.svg">
+        </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.Ellipse }}"><img class="icon" src="assets/icons/ellipse.svg">
+        </mat-button-toggle>
+        <mat-button-toggle value="{{ tools.FillColor }}"><img class="icon" src="assets/icons/fill-color.svg">
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div class="inline-block">
+      <p>Fill mode:</p>
+      <mat-button-toggle-group (change)="fillModeChanged($event.value)" value="{{fillMode.Filled}}">
+        <mat-button-toggle value="{{ fillMode.Filled }}"><img class="icon" src="assets/icons/fill.svg">
+        </mat-button-toggle>
+        <mat-button-toggle value="{{ fillMode.BorderOnly }}"><img class="icon" src="assets/icons/square.svg">
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+  </div>
+  <div class="line">
+    <p>Color:</p>
+    <mat-button-toggle-group (change)="colorChanged($event.value)" value="{{ colors[0] }}">
+      <mat-button-toggle value="{{ color }}" *ngFor="let color of colors">
+        <svg attr.fill="{{ color }}" width="20" height="20" class="svg-color"
+             viewBox="0 0 20 20"
+             xmlns="http://www.w3.org/2000/svg">
+          <rect x="0" y="0" width="20" height="20"/>
+        </svg>
+      </mat-button-toggle>
     </mat-button-toggle-group>
-  </p>
-  <p>
-    Color:
-    <mat-button-toggle-group (change)="colorChanged($event.value)" value="{{ colors.Black }}">
-      <mat-button-toggle value="{{ colors.Black }}">Black</mat-button-toggle>
-      <mat-button-toggle value="{{ colors.Red }}">Red</mat-button-toggle>
-    </mat-button-toggle-group>
-  </p>
+  </div>
 </div>
